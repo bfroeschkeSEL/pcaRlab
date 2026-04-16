@@ -18,6 +18,7 @@ library(ggrepel)
 # =========================
 ##fish_model
 
+
 # =========================
 # 3. PREPARE DATA FOR PCA
 # =========================
@@ -168,6 +169,23 @@ loadings[, c("Variable", "PC1", "PC2")]
 # then a significant PC1 in regression means:
 # "Fish abundance is related to Temp + Turbidity + Chlorophyll gradient"
 
+ggplot(reg_data, aes(x = PC1, y = PC2, color = Fish_Abundance)) +
+  geom_point(size = 3) +
+  scale_color_viridis_c(option = "D", end = 0.95) +
+  theme_minimal() +
+  labs(title = "Fish Abundance across PCA Space",
+       color = "Abundance")
+
+reg_data$Abundance_Group <- cut(reg_data$Fish_Abundance,
+                                breaks = 4,
+                                labels = c("Low", "Med-Low", "Med-High", "High"))
+
+ggplot(reg_data, aes(x = PC1, y = PC2, color = Abundance_Group)) +
+  geom_point(size = 3) +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal() +
+  labs(title = "Fish Abundance Categories across PCA Space",
+       color = "Abundance Level")
 # =========================
 # 12. ORIGINAL VARIABLE REGRESSION
 # =========================
@@ -191,6 +209,9 @@ summary(model_original)
 # 1. Which model is easier to interpret?
 # 2. Which avoids multicollinearity?
 # 3. What do the PCs represent biologically?
+
+
+
 
 ############################################################
 # END OF LAB
